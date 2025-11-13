@@ -27,6 +27,7 @@ type Machine struct {
 	BMCIPAddress string `csv:"bmc_ip, omitempty"`
 	BMCUsername  string `csv:"bmc_username, omitempty"`
 	BMCPassword  string `csv:"bmc_password, omitempty"`
+	BMCPort      int    `csv:"bmc_port, omitempty"`
 	VLANID       string `csv:"vlan_id, omitempty"`
 
 	// BMCOptions are the options used for Rufio providers.

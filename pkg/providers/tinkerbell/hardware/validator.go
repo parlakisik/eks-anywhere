@@ -127,6 +127,16 @@ func StaticMachineAssertions() MachineAssertion {
 				return fmt.Errorf("BMCIPAddress: %v", err)
 			}
 
+			if m.BMCPort != 0 {
+				const (
+					maxPort = 65535
+					minPort = 1
+				)
+				if m.BMCPort < minPort || m.BMCPort > maxPort {
+					return fmt.Errorf("BMCPort: must be between %d and %d", minPort, maxPort)
+				}
+			}
+
 			if m.BMCOptions == nil || m.BMCOptions.RPC == nil {
 				if m.BMCUsername == "" {
 					return newEmptyFieldError("BMCUsername")

@@ -216,6 +216,12 @@ func TestStaticMachineAssertions_InvalidMachines(t *testing.T) {
 		"NonIntVLAN": func(h *hardware.Machine) {
 			h.VLANID = "im not an int"
 		},
+		"InvalidBMCPortOver": func(h *hardware.Machine) {
+			h.BMCPort = 65536
+		},
+		"InvalidBMCPortNegative": func(h *hardware.Machine) {
+			h.BMCPort = -1
+		},
 	}
 
 	validate := hardware.StaticMachineAssertions()

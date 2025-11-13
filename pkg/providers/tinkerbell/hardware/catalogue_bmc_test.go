@@ -82,6 +82,37 @@ func TestBMCCatalogueWriter_Write(t *testing.T) {
 	g.Expect(bmcs[0].Spec.Connection.AuthSecretRef.Name).To(gomega.ContainSubstring(machine.Hostname))
 }
 
+func TestBMCCatalogueWriter_WriteWithCustomPort(t *testing.T) {
+	g := gomega.NewWithT(t)
+
+	catalogue := hardware.NewCatalogue()
+	writer := hardware.NewBMCCatalogueWriter(catalogue)
+	machine := NewValidMachine()
+	machine.BMCPort = 6230
+
+	err := writer.Write(machine)
+	g.Expect(err).To(gomega.Succeed())
+
+	bmcs := catalogue.AllBMCs()
+	g.Expect(bmcs).To(gomega.HaveLen(1))
+	g.Expect(bmcs[0].Spec.Connection.Port).To(gomega.Equal(6230))
+}
+
+func TestBMCCatalogueWriter_WriteWithoutPort(t *testing.T) {
+	g := gomega.NewWithT(t)
+
+	catalogue := hardware.NewCatalogue()
+	writer := hardware.NewBMCCatalogueWriter(catalogue)
+	machine := NewValidMachine()
+
+	err := writer.Write(machine)
+	g.Expect(err).To(gomega.Succeed())
+
+	bmcs := catalogue.AllBMCs()
+	g.Expect(bmcs).To(gomega.HaveLen(1))
+	g.Expect(bmcs[0].Spec.Connection.Port).To(gomega.Equal(0))
+}
+
 func TestBMCMachineWithOptions(t *testing.T) {
 	g := gomega.NewWithT(t)
 

@@ -106,6 +106,10 @@ func toRufioMachine(m Machine) *v1alpha1.Machine {
 			PreferredOrder: []v1alpha1.ProviderName{GofishProviderOption},
 		},
 	}
+	// Set port if specified in the hardware CSV, otherwise use the Rufio default (623)
+	if m.BMCPort != 0 {
+		conn.Port = m.BMCPort
+	}
 	if m.BMCOptions != nil && m.BMCOptions.RPC.ConsumerURL != "" {
 		conn.ProviderOptions.RPC = toRPCOptions(m.BMCOptions.RPC, m)
 	}
